@@ -5,7 +5,7 @@ public class Menu
     private readonly List<Option> _options;
     private readonly string _title;
     private int SelectedOptionIndex { get; set; } = 0; // Default to the first option.
-    private delegate string HeaderDelegate();
+    private Delegate? HeaderDelegate { get; set; }
     
     public Menu(string title)
     {
@@ -13,9 +13,21 @@ public class Menu
         _options = new List<Option>();
     }
     
+    public Menu(Func<string> title)
+    {
+        _title = title();
+        _options = new List<Option>();
+    }
+    
     public Menu(string title, params Option[] options)
     {
         _title = title;
+        _options = options.ToList();
+    }
+    
+    public Menu(Func<string> title, params Option[] options)
+    {
+        _title = title();
         _options = options.ToList();
     }
     
@@ -64,6 +76,15 @@ public class Menu
             selectedOption.Invoke();
         } while (selectedOption.Action != null);
     }
+    
+    /// <summary>
+    /// Sets the header of the menu.
+    /// </summary>
+    /// <param name="headerDelegate">A delegate that returns the header of the menu</param>
+    public void SetHeader(Func<string> headerDelegate)
+    {
+        HeaderDelegate = headerDelegate;
+    }
 
     private Option NextChoice()
     {
@@ -102,6 +123,25 @@ public class Menu
     {
         Console.Clear();
         
+        Console.WriteLine(Header());
+        
+        // Write the Delegate header if there are any delegates in the menu.
+        Console.WriteLine(HeaderDelegate?.DynamicInvoke());
+        
+        // Write the options.
+        for (var i = 0; i < _options.Count; i++)
+        {
+            var option = _options[i];
+            var prefix = i == SelectedOptionIndex ? "> " : "  ";
+            // Change the color of the selected option.
+            Console.ForegroundColor = i == SelectedOptionIndex ? ConsoleColor.Magenta : ConsoleColor.Gray;
+            Console.WriteLine($"{prefix}{option}");
+        }
+        
+        // Reset the color.
+        Console.ForegroundColor = ConsoleColor.Gray;
+        Console.WriteLine("Use the arrow keys to navigate the menu. Select an option by pressing enter.");
+        
     }
 
     private string Header()
@@ -109,10 +149,9 @@ public class Menu
         return $"--- {_title} ---";
     }
     
-    
-    
     public override string ToString()
     {
+        // TODO
         return _title;
     }
 

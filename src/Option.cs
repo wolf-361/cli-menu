@@ -20,6 +20,19 @@ public class Option
     }
     
     /// <summary>
+    /// Creates a new option.
+    /// </summary>
+    /// <param name="name">A function that returns the name of the option</param>
+    /// <param name="action">The action the option will do when selected</param>
+    /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
+    public Option(Func<string> name, Delegate action, bool waitForUser = false)
+    {
+        Name = name();
+        Action = action;
+        WaitForUser = waitForUser;
+    }
+    
+    /// <summary>
     /// Waits for the user to press a key.
     /// </summary>
     private static void WaitForUserInput()
