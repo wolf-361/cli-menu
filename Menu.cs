@@ -5,6 +5,7 @@ public class Menu
     private readonly List<Option> _options;
     private readonly string _title;
     private int SelectedOptionIndex { get; set; } = 0; // Default to the first option.
+    private delegate string HeaderDelegate();
     
     public Menu(string title)
     {
@@ -61,7 +62,7 @@ public class Menu
         {
             selectedOption = NextChoice();
             selectedOption.Invoke();
-        } while (selectedOption != null);
+        } while (selectedOption.Action != null);
     }
 
     private Option NextChoice()
@@ -99,7 +100,13 @@ public class Menu
 
     private void Show()
     {
+        Console.Clear();
         
+    }
+
+    private string Header()
+    {
+        return $"--- {_title} ---";
     }
     
     
