@@ -4,6 +4,7 @@ public class Menu
 {
     private readonly List<Option> _options;
     private readonly string _title;
+    private int SelectedOptionIndex { get; set; } = 0; // Default to the first option.
     
     public Menu(string title)
     {
@@ -46,6 +47,66 @@ public class Menu
     public void AddOptions(params Option[] options)
     {
         _options.AddRange(options);
+    }
+    
+    // --- Menu management ---
+
+    /// <summary>
+    /// Displays the menu and waits for the user to select an option.
+    /// </summary>
+    public void Start()
+    {
+        Option selectedOption;
+        do
+        {
+            selectedOption = NextChoice();
+            selectedOption.Invoke();
+        } while (selectedOption != null);
+    }
+
+    private Option NextChoice()
+    {
+        var done = false;
+
+        do
+        {
+            Show();
+
+            Console.Write("Select an option: ");
+
+            var input = Console.ReadKey(true);
+
+            switch (input.Key)
+            {
+                case ConsoleKey.UpArrow:
+                    MoveUp();
+                    break;
+                case ConsoleKey.DownArrow:
+                    MoveDown();
+                    break;
+                case ConsoleKey.Enter:
+                    done = true;
+                    break;
+            }
+        } while (!done);
+        
+        return _options[SelectedOptionIndex];
+    }
+    
+    private void MoveUp() => SelectedOptionIndex = Math.Max(0, SelectedOptionIndex - 1);
+    
+    private void MoveDown() => SelectedOptionIndex = Math.Min(_options.Count - 1, SelectedOptionIndex + 1);
+
+    private void Show()
+    {
+        
+    }
+    
+    
+    
+    public override string ToString()
+    {
+        return _title;
     }
 
 }
