@@ -3,7 +3,7 @@ namespace cli_menu;
 public class Option
 {
     public string Name { get; }
-    public Delegate Action { get; }
+    public Delegate? Action { get; }
     public bool WaitForUser { get; }
     
     /// <summary>
