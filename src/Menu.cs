@@ -48,7 +48,7 @@ public class Menu
     /// <param name="name">The name of the option</param>
     /// <param name="action">The action the option will do when selected</param>
     /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
-    public void AddOption(string name, Delegate action, bool waitForUser = false)
+    public void AddOption(string name, Delegate action, bool waitForUser = true)
     {
         _options.Add(new Option(name, action, waitForUser));
     }
@@ -94,8 +94,6 @@ public class Menu
         {
             Show();
 
-            Console.Write("Select an option: ");
-
             var input = Console.ReadKey(true);
 
             switch (input.Key)
@@ -132,7 +130,7 @@ public class Menu
         for (var i = 0; i < _options.Count; i++)
         {
             var option = _options[i];
-            var prefix = i == SelectedOptionIndex ? "> " : "  ";
+            var prefix = i == SelectedOptionIndex ? "> " : $"  ";
             // Change the color of the selected option.
             Console.ForegroundColor = i == SelectedOptionIndex ? ConsoleColor.Magenta : ConsoleColor.Gray;
             Console.WriteLine($"{prefix}{option}");
@@ -151,7 +149,6 @@ public class Menu
     
     public override string ToString()
     {
-        // TODO
         return _title;
     }
 

@@ -47,8 +47,11 @@ public class Option
     public void Invoke()
     {
         Console.Clear(); // Clear the console before invoking the action.
+
+        // Refresh the option name
+
         
-        Action.DynamicInvoke();
+        Action?.DynamicInvoke();
         
         // If the option is set to wait for user input, wait for the user to press enter.
         if (WaitForUser)
