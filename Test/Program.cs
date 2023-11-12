@@ -10,7 +10,11 @@ var menu = new Menu("Test Menu");
 string test = "Option 1";
 
 menu.AddOptions(
-        new Option(test, () => test = "Test as été selectionner"),
+        new Option(() => test, () =>
+        {
+            test = "Test as été selectionner";
+            Console.WriteLine(test);
+        }),
         new Option("Option 2", () => Console.WriteLine("Option 2 was selected!")),
         new Option("Option 3", () => Console.WriteLine("Option 3 was selected!"))
     );
@@ -25,3 +29,4 @@ menu.AddOption("Option 9", () => Console.WriteLine("Option 9 was selected!"));
 menu.AddOption("Option 10", () => Console.WriteLine("Option 10 was selected!"));
 
 menu.Start();
+

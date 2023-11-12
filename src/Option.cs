@@ -2,7 +2,7 @@ namespace cli_menu;
 
 public class Option
 {
-    public string Name { get; }
+    public Func<string> Name { get; }
     public Delegate? Action { get; }
     public bool WaitForUser { get; }
     
@@ -12,22 +12,22 @@ public class Option
     /// <param name="name">The name of the option</param>
     /// <param name="action">The action the option will do when selected</param>
     /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
-    public Option(string name, Delegate action, bool waitForUser = false)
+    public Option(string name, Delegate action, bool waitForUser = true)
     {
-        Name = name;
+        Name = () => name;
         Action = action;
         WaitForUser = waitForUser;
     }
-    
+
     /// <summary>
     /// Creates a new option.
     /// </summary>
     /// <param name="name">A function that returns the name of the option</param>
     /// <param name="action">The action the option will do when selected</param>
     /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
-    public Option(Func<string> name, Delegate action, bool waitForUser = false)
+    public Option(Func<string> name, Delegate action, bool waitForUser = true)
     {
-        Name = name();
+        Name = name;
         Action = action;
         WaitForUser = waitForUser;
     }
@@ -60,6 +60,6 @@ public class Option
     
     public override string ToString()
     {
-        return Name;
+        return Name();
     }
 }
