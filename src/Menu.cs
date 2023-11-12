@@ -3,31 +3,31 @@
 public class Menu
 {
     private readonly List<Option> _options;
-    private readonly string _title;
+    private Func<string> Title { get; set; }
     private int SelectedOptionIndex { get; set; } = 0; // Default to the first option.
-    private Delegate? HeaderDelegate { get; set; }
-    
+    public Func<string>? Header { get; set; }
+
     public Menu(string title)
     {
-        _title = title;
+        Title = () => title;
         _options = new List<Option>();
     }
     
     public Menu(Func<string> title)
     {
-        _title = title();
+        Title = title;
         _options = new List<Option>();
     }
     
     public Menu(string title, params Option[] options)
     {
-        _title = title;
+        Title = () => title;
         _options = options.ToList();
     }
     
     public Menu(Func<string> title, params Option[] options)
     {
-        _title = title();
+        Title = title;
         _options = options.ToList();
     }
     
@@ -76,15 +76,6 @@ public class Menu
             selectedOption.Invoke();
         } while (selectedOption.Action != null);
     }
-    
-    /// <summary>
-    /// Sets the header of the menu.
-    /// </summary>
-    /// <param name="headerDelegate">A delegate that returns the header of the menu</param>
-    public void SetHeader(Func<string> headerDelegate)
-    {
-        HeaderDelegate = headerDelegate;
-    }
 
     private Option NextChoice()
     {
@@ -121,10 +112,12 @@ public class Menu
     {
         Console.Clear();
         
-        Console.WriteLine(Header());
+        // Write the title.
+        Console.WriteLine($"--- {Title()} ---\n");
         
-        // Write the Delegate header if there are any delegates in the menu.
-        Console.WriteLine(HeaderDelegate?.DynamicInvoke());
+        // Write the header if there are any header func in the menu.
+        if (Header != null)
+            Console.WriteLine($"\n{Header()}\n");
         
         // Write the options.
         for (var i = 0; i < _options.Count; i++)
@@ -141,15 +134,4 @@ public class Menu
         Console.WriteLine("Use the arrow keys to navigate the menu. Select an option by pressing enter.");
         
     }
-
-    private string Header()
-    {
-        return $"--- {_title} ---";
-    }
-    
-    public override string ToString()
-    {
-        return _title;
-    }
-
 }
