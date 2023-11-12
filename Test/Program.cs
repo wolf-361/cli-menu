@@ -28,5 +28,9 @@ menu.AddOption("Option 8", () => Console.WriteLine("Option 8 was selected!"));
 menu.AddOption("Option 9", () => Console.WriteLine("Option 9 was selected!"));
 menu.AddOption("Option 10", () => Console.WriteLine("Option 10 was selected!"));
 
+// Add the delegate to the menu header. that will change the header text to the current time.
+menu.SetHeader(() => $"Test Menu - {DateTime.Now}");
+
+
 menu.Start();
 
