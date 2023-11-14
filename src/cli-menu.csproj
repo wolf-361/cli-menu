@@ -11,7 +11,7 @@
         <Description>Simple C# cli menu. Includes a table class for displaying data in a table format.</Description>
         <Copyright>Copyright (c) 2023 Luc Allaire</Copyright>
         <PackageProjectUrl>https://github.com/wolf-361/cli-menu</PackageProjectUrl>
-        <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/wolf-361/cli-menu</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
@@ -19,7 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Include="docs\README.md" Pack="true" PackagePath="\"/>
+        <None Include="..\README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
 
 </Project>
