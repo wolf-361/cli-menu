@@ -14,7 +14,12 @@
         <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/wolf-361/cli-menu</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>Library, cli</PackageTags>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="docs\README.md" Pack="true" PackagePath="\"/>
+    </ItemGroup>
 
 </Project>
