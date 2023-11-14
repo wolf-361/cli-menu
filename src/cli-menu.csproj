@@ -5,6 +5,16 @@
         <RootNamespace>cli_menu</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Title>cli Menu</Title>
+        <Authors>Luc Allaire, Hillpro</Authors>
+        <Description>Simple C# cli menu. Includes a table class for displaying data in a table format.</Description>
+        <Copyright>Copyright (c) 2023 Luc Allaire</Copyright>
+        <PackageProjectUrl>https://github.com/wolf-361/cli-menu</PackageProjectUrl>
+        <PackageLicenseUrl>https://choosealicense.com/licenses/mit/</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/wolf-361/cli-menu</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageTags>Library, cli</PackageTags>
     </PropertyGroup>
 
 </Project>
