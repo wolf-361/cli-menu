@@ -3,36 +3,40 @@
 public class Menu
 {
     private readonly List<Option> _options;
-    private Func<string> Title { get; set; }
-    private int SelectedOptionIndex { get; set; } = 0; // Default to the first option.
+    public Func<string> Title { get; set; }
     public Func<string>? Header { get; set; }
 
+    private int _selectedOptionIndex; // Default to the first option.
+    private Option SelectedOption
+    {
+        get { return _options[_selectedOptionIndex]; }
+        set { _selectedOptionIndex = _options.IndexOf(value); }
+    }
+
+    public Menu(Func<string> title, List<Option> list)
+    {
+        Title = title;
+        _options = list;
+    }
+
+    #region Constructors overloads
+
     public Menu(string title)
-    {
-        Title = () => title;
-        _options = new List<Option>();
-    }
-    
+        : this(() => title, new List<Option>()) { }
+
     public Menu(Func<string> title)
-    {
-        Title = title;
-        _options = new List<Option>();
-    }
-    
+        : this(title, new List<Option>()) { }
+
     public Menu(string title, params Option[] options)
-    {
-        Title = () => title;
-        _options = options.ToList();
-    }
-    
+        : this(() => title, options.ToList()) { }
+
     public Menu(Func<string> title, params Option[] options)
-    {
-        Title = title;
-        _options = options.ToList();
-    }
-    
+        : this(title, options.ToList()) { }
+
+    #endregion
+
     // --- Option management ---
-    
+
     /// <summary>
     /// Adds an option to this menu.
     /// </summary>
@@ -41,18 +45,18 @@ public class Menu
     {
         _options.Add(option);
     }
-    
+
     /// <summary>
     /// Adds an option to this menu.
     /// </summary>
     /// <param name="name">The name of the option</param>
     /// <param name="action">The action the option will do when selected</param>
     /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
-    public void AddOption(string name, Delegate action, bool waitForUser = true)
+    public void AddOption(string name, Action action, bool waitForUser = true)
     {
-        _options.Add(new Option(name, action, waitForUser));
+        AddOption(new Option(name, action, waitForUser));
     }
-    
+
     /// <summary>
     /// Adds multiple options to this menu.
     /// </summary>
@@ -61,7 +65,7 @@ public class Menu
     {
         _options.AddRange(options);
     }
-    
+
     // --- Menu management ---
 
     /// <summary>
@@ -69,18 +73,21 @@ public class Menu
     /// </summary>
     public void Start()
     {
-        Option selectedOption;
+        _options.Add(Option.ExitOption);
+
         do
         {
-            selectedOption = NextChoice();
-            selectedOption.Invoke();
-        } while (selectedOption.Action != null);
+            NextChoice();
+            SelectedOption.Invoke();
+        } while (SelectedOption != Option.ExitOption);
     }
 
+    /// <summary>
+    /// Select the next option
+    /// </summary>
+    /// <returns>Option: Kept return in case of future change</returns>
     private Option NextChoice()
     {
-        var done = false;
-
         do
         {
             Show();
@@ -96,42 +103,38 @@ public class Menu
                     MoveDown();
                     break;
                 case ConsoleKey.Enter:
-                    done = true;
-                    break;
+                    return SelectedOption;
             }
-        } while (!done);
-        
-        return _options[SelectedOptionIndex];
+        } while (true);
     }
-    
-    private void MoveUp() => SelectedOptionIndex = Math.Max(0, SelectedOptionIndex - 1);
-    
-    private void MoveDown() => SelectedOptionIndex = Math.Min(_options.Count - 1, SelectedOptionIndex + 1);
+
+    private void MoveUp() => _selectedOptionIndex = Math.Max(0, _selectedOptionIndex - 1);
+
+    private void MoveDown() => _selectedOptionIndex = Math.Min(_options.Count - 1, _selectedOptionIndex + 1);
 
     private void Show()
     {
         Console.Clear();
-        
+
         // Write the title.
         Console.WriteLine($"--- {Title()} ---\n");
-        
+
         // Write the header if there are any header func in the menu.
         if (Header != null)
             Console.WriteLine($"\n{Header()}\n");
-        
+
         // Write the options.
-        for (var i = 0; i < _options.Count; i++)
+        foreach (Option option in _options)
         {
-            var option = _options[i];
-            var prefix = i == SelectedOptionIndex ? "> " : $"  ";
+            var isSelected = option == SelectedOption;
+
             // Change the color of the selected option.
-            Console.ForegroundColor = i == SelectedOptionIndex ? ConsoleColor.Magenta : ConsoleColor.Gray;
-            Console.WriteLine($"{prefix}{option}");
+            Console.ForegroundColor = isSelected ? ConsoleColor.Magenta : ConsoleColor.Gray;
+            Console.WriteLine($"{(isSelected ? "> " : "  ")}{option}");
         }
-        
+
         // Reset the color.
         Console.ForegroundColor = ConsoleColor.Gray;
         Console.WriteLine("Use the arrow keys to navigate the menu. Select an option by pressing enter.");
-        
     }
 }
