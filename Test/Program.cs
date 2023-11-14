@@ -1,9 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-
-// Create a new menu.
-
-using cli_menu;
+﻿using cli_menu;
 
 var menu = new Menu("Test Menu");
 
