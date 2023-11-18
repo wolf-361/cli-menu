@@ -27,5 +27,18 @@ menu.AddOption("Option 10", () => Console.WriteLine("Option 10 was selected!"));
 menu.Header = () => $"Test Menu - {DateTime.Now}";
 
 
-menu.Start();
+//menu.Start();
+
+// Console table test
+ConsoleTable table = new();
+
+table.SetTitles("Test Table", "Test Table 2", "Test 3");
+
+table.Append("Test 1", "Test 2");
+table.Append("Test 3", "Test 4");
+table.Append("Test 5", "Test 6");
+table.Append("Test 7", "Test 8");
+table.Append("Test 9", "Test 10", "Test 11111111");
+
+table.Display();
 
