@@ -1,4 +1,6 @@
-﻿namespace cli_menu;
+﻿using cli_menu.Properties;
+
+namespace cli_menu;
 
 public class Menu
 {
@@ -130,11 +132,14 @@ public class Menu
 
             // Change the color of the selected option.
             Console.ForegroundColor = isSelected ? ConsoleColor.Magenta : ConsoleColor.Gray;
-            Console.WriteLine($"{(isSelected ? "> " : "  ")}{option}");
+            Console.WriteLine($"{(isSelected ? ">" : " ")} {option}");
         }
 
         // Reset the color.
         Console.ForegroundColor = ConsoleColor.Gray;
-        Console.WriteLine("Use the arrow keys to navigate the menu. Select an option by pressing enter.");
+        Console.WriteLine();
+
+        Console.Write(strings.UseArrowKeysToNavigate + ' ');
+        Console.WriteLine(strings.PressEnterToSelectOption);
     }
 }
