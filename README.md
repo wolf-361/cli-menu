@@ -32,10 +32,10 @@ menu.Start();
 ```csharp
 // Add multiple options
 menu.AddOptions(
-        new Option("Option 1", () => Console.WriteLine("Option 1 was selected!")),
-        new Option("Option 2", () => Console.WriteLine("Option 2 was selected!")),
-        new Option("Option 3", () => Console.WriteLine("Option 3 was selected!"))
-    );
+    new Option("Option 1", () => Console.WriteLine("Option 1 was selected!")),
+    new Option("Option 2", () => Console.WriteLine("Option 2 was selected!")),
+    new Option("Option 3", () => Console.WriteLine("Option 3 was selected!"))
+);
 ```
 
 ### Add an option that will change if you change the value of a variable
