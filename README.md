@@ -30,30 +30,17 @@ menu.Start();
 ### Adding multiple options
 
 ```csharp
-using cli_menu;
-
-// Create a new menu
-Menu menu = new Menu("Main Menu");
-
 // Add multiple options
 menu.AddOptions(
         new Option("Option 1", () => Console.WriteLine("Option 1 was selected!")),
         new Option("Option 2", () => Console.WriteLine("Option 2 was selected!")),
         new Option("Option 3", () => Console.WriteLine("Option 3 was selected!"))
     );
-
-// Display the menu
-menu.Start();
 ```
 
 ### Add an option that will change if you change the value of a variable
 
 ```csharp
-using cli_menu;
-
-// Create a new menu
-Menu menu = new Menu("Main Menu");
-
 // Create a variable
 string option1 = "Option 1";
 
@@ -62,32 +49,18 @@ menu.AddOption(() => option1, () => {
     Console.WriteLine("Option 1 selected");
     option1 = "Option 1 selected";
 });
-
-// Display the menu
-menu.Start();
 ```
 
 ### Add a header
 
 ```csharp
-using cli_menu;
-
-// Create a new menu
-Menu menu = new Menu("Main Menu");
-
 // Add a header
 menu.Header = () => $"Current time is {DateTime.Now}";
-
-// Add an option
-menu.AddOption("Option 1", () => Console.WriteLin("Option 1 selected"));
-
-// Display the menu
-menu.Start();
 ```
 
-### Use the table builder (in development)
+## In development
 
-This is a future feature that is currently in development. It is not yet available.
+- Adding a Table builder and allowing to integrate it in the menu
 
 ## Contributing
 
