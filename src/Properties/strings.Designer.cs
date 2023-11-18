@@ -61,6 +61,15 @@ namespace cli_menu.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Table is empty..
+        /// </summary>
+        internal static string EmptyTable {
+            get {
+                return ResourceManager.GetString("EmptyTable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exit.
         /// </summary>
         internal static string Exit {
