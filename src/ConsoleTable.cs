@@ -188,127 +188,21 @@ public class ConsoleTable
     /// <summary>
     /// Append a row to the table.
     /// </summary>
-    /// <param name="items">The items (string)</param>
-    public void Append(params string[] items)
+    /// <typeparamref name="T"/>
+    /// <param name="items">The items (T)</param>
+    public void Append<T>(params T[] items) where T : notnull
     {
-        AddRow(items);
+        Append((IEnumerable<T>) items);
     }
 
     /// <summary>
     /// Append a row to the table.
     /// </summary>
-    /// <param name="items">The items (int)</param>
-    public void Append(params int[] items)
+    /// <typeparamref name="T"/>
+    /// <param name="items">The array (T) to add</param>
+    public void Append<T>(IEnumerable<T> items) where T : notnull
     {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The items (double)</param>
-    public void Append(params double[] items)
-    {
-        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The items (float)</param>
-    public void Append(params float[] items)
-    {
-        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The items (decimal)</param>
-    public void Append(params decimal[] items)
-    {
-        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The items (bool)</param>
-    public void Append(params bool[] items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The items (char)</param>
-    public void Append(params char[] items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (string) to add</param>
-    public void Append(IEnumerable<string> items)
-    {
-        AddRow(items.ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (int) to add</param>
-    public void Append(IEnumerable<int> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (double) to add</param>
-    public void Append(IEnumerable<double> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (float) to add</param>
-    public void Append(IEnumerable<float> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (decimal) to add</param>
-    public void Append(IEnumerable<decimal> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (bool) to add</param>
-    public void Append(IEnumerable<bool> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
-    }
-
-    /// <summary>
-    /// Append a row to the table.
-    /// </summary>
-    /// <param name="items">The array (char) to add</param>
-    public void Append(IEnumerable<char> items)
-    {
-        AddRow(items.Select(item => item.ToString()).ToArray());
+        AddRow(items.Select(item => item.ToString() ?? "").ToArray());
     }
 
     /// <summary>
