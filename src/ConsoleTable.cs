@@ -326,10 +326,16 @@ public class ConsoleTable
         // Display the bottom border
         Console.WriteLine(this);
     }
-    
+
     public override string ToString()
     {
         StringBuilder sb = new();
+
+        // Add the title (if there is one)
+        if (_title != null)
+        {
+            sb.AppendLine(_title);
+        }
 
         // Sandwich the table colomn names between the top and middle border (if there are any)
         if (_columnNames.Count > 0)
