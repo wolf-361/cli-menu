@@ -311,6 +311,9 @@ public class ConsoleTable
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Display the table in the console.
+    /// </summary>
     public void Display()
     {
         // If the table is empty, display a message
@@ -323,8 +326,7 @@ public class ConsoleTable
         // Display the bottom border
         Console.WriteLine(this);
     }
-
-    // return the table as a string
+    
     public override string ToString()
     {
         StringBuilder sb = new();
