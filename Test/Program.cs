@@ -33,15 +33,18 @@ menu.Header = () => $"Test Menu - {DateTime.Now}";
 //menu.Start();
 
 // Console table test
-ConsoleTable table = new();
+ConsoleTable table = new("Test Table");
 
-table.SetTitles("Test Table", "Test Table 2", "Test 3");
+// table.AddColumns("Test 1", "Test 2", "Test 3");
+table.SetTitle("test");
 
 table.Append("Test 1", "Test 2");
 table.Append("Test 3", "Test 4");
 table.Append("Test 5", "Test 6");
 table.Append("Test 7", "Test 8");
 table.Append("Test 9", "Test 10", "Test 11111111");
+table.Append(1,2,3);
+table.Append(new []{1, 23, 3});
 
 table.Display();
 
