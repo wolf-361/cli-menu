@@ -36,7 +36,7 @@ menu.Header = () => $"Test Menu - {DateTime.Now}";
 ConsoleTable table = new("Test Table");
 
 // table.AddColumns("Test 1", "Test 2", "Test 3");
-table.SetTitle("test");
+table.Title = "Test";
 
 table.Append("Test 1", "Test 2");
 table.Append("Test 3", "Test 4");

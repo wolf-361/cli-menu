@@ -1,25 +1,28 @@
-using System.Globalization;
 using cli_menu.Properties;
 using System.Text;
 
 namespace cli_menu;
 
+public enum BorderType
+{
+    Top,
+    Middle,
+    Bottom,
+}
+
 public class ConsoleTable
 {
     // Constants
-    private const char TopLeft = '┌';
-    private const char TopRight = '┐';
-    private const char BottomLeft = '└';
-    private const char BottomRight = '┘';
     private const char HorizontalLine = '-';
     private const char VerticalLine = '|';
-    private const char Cross = '┼';
-    private const char LeftCross = '├';
-    private const char RightCross = '┤';
-    private const char TopCross = '┬';
-    private const char BottomCross = '┴';
     private const char Space = ' ';
-    private const string Empty = "";
+
+    private static readonly Dictionary<BorderType, char[]> borders = new()
+    {
+        { BorderType.Top, new char[3] {'┌', '┬', '┐'} },
+        { BorderType.Middle, new char[3] { '├', '┼', '┤' } },
+        { BorderType.Bottom, new char[3] { '└', '┴', '┘' } }
+    };
 
     // Instance Fields
     private string? _title;
@@ -28,8 +31,11 @@ public class ConsoleTable
     private readonly List<int> _columnWidths = new();
     private int _columnCount; // Default to 0
 
+    // Accessors
+    public string Title { set { _title = value; } }
+
     // ----- Constructors -----
-    public ConsoleTable (string? title = null)
+    public ConsoleTable(string? title = null)
     {
         _title = title;
     }
@@ -47,45 +53,17 @@ public class ConsoleTable
         return sb.ToString();
     }
 
-    private string GetTopBorder()
+    private string GetBorder(BorderType type)
     {
         StringBuilder sb = new();
-        sb.Append(TopLeft);
+        sb.Append(borders[type][0]);
         for (var i = 0; i < _columnCount; i++)
         {
             sb.Append(GetLine(_columnWidths[i]));
-            sb.Append(TopCross);
+            sb.Append(borders[type][1]);
         }
         sb.Remove(sb.Length - 1, 1);
-        sb.Append(TopRight);
-        return sb.ToString();
-    }
-
-    private string GetBottomBorder()
-    {
-        StringBuilder sb = new();
-        sb.Append(BottomLeft);
-        for (var i = 0; i < _columnCount; i++)
-        {
-            sb.Append(GetLine(_columnWidths[i]));
-            sb.Append(BottomCross);
-        }
-        sb.Remove(sb.Length - 1, 1);
-        sb.Append(BottomRight);
-        return sb.ToString();
-    }
-
-    private string GetMiddleBorder()
-    {
-        StringBuilder sb = new();
-        sb.Append(LeftCross);
-        for (var i = 0; i < _columnCount; i++)
-        {
-            sb.Append(GetLine(_columnWidths[i]));
-            sb.Append(Cross);
-        }
-        sb.Remove(sb.Length - 1, 1);
-        sb.Append(RightCross);
+        sb.Append(borders[type][2]);
         return sb.ToString();
     }
 
@@ -102,7 +80,7 @@ public class ConsoleTable
                 if (row.Length > i)
                     newRow[i] = row[i];
                 else
-                    newRow[i] = Empty;
+                    newRow[i] = string.Empty;
             }
             row = newRow;
         }
@@ -156,7 +134,7 @@ public class ConsoleTable
                 if (row.Length > i)
                     newRow[i] = row[i];
                 else
-                    newRow[i] = Empty;
+                    newRow[i] = string.Empty;
             }
             row = newRow;
         }
@@ -164,15 +142,6 @@ public class ConsoleTable
     }
 
     // ----- Public Methods -----
-
-    /// <summary>
-    /// Sets the title of the table.
-    /// </summary>
-    /// <param name="title">The (new) title of the table</param>
-    public void SetTitle(string title)
-    {
-        _title = title;
-    }
 
     /// <summary>
     /// Add one or multiple columns to the table.
@@ -192,7 +161,7 @@ public class ConsoleTable
     /// <param name="items">The items (T)</param>
     public void Append<T>(params T[] items) where T : notnull
     {
-        Append((IEnumerable<T>) items);
+        Append((IEnumerable<T>)items);
     }
 
     /// <summary>
@@ -234,13 +203,13 @@ public class ConsoleTable
         // Sandwich the table colomn names between the top and middle border (if there are any)
         if (_columnNames.Count > 0)
         {
-            sb.AppendLine(GetTopBorder());
+            sb.AppendLine(GetBorder(BorderType.Top));
             sb.AppendLine(GetRowString(_columnNames.ToArray()));
-            sb.AppendLine(GetMiddleBorder());
+            sb.AppendLine(GetBorder(BorderType.Middle));
         }
         else
         {
-            sb.AppendLine(GetTopBorder());
+            sb.AppendLine(GetBorder(BorderType.Top));
         }
 
         // Add the rows
@@ -250,7 +219,7 @@ public class ConsoleTable
         }
 
         // Add the bottom border
-        sb.AppendLine(GetBottomBorder());
+        sb.AppendLine(GetBorder(BorderType.Bottom));
         return sb.ToString();
     }
 }
