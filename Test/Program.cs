@@ -1,4 +1,7 @@
 ﻿using cli_menu;
+using System.Globalization;
+
+Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-CA");
 
 var menu = new Menu("Test Menu");
 

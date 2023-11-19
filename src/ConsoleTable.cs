@@ -1,3 +1,4 @@
+using cli_menu.Properties;
 using System.Text;
 
 namespace cli_menu;
@@ -157,7 +158,7 @@ public class ConsoleTable
         // If the table is empty, display a message
         if (_rows.Count == 0)
         {
-            Console.WriteLine("Table is empty.");
+            Console.WriteLine(strings.EmptyTable);
             return;
         }
 

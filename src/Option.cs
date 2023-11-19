@@ -1,3 +1,5 @@
+using cli_menu.Properties;
+
 namespace cli_menu;
 
 /// <summary>
@@ -9,7 +11,7 @@ public class Option
     private readonly Action _action;
     private readonly bool _waitForUser;
 
-    public static readonly Option ExitOption = new("Exit", () => { }, false);
+    public static readonly Option ExitOption = new(strings.Exit, () => { }, false);
 
     /// <summary>
     /// Creates a new option.
@@ -38,7 +40,7 @@ public class Option
     /// </summary>
     private static void WaitForUserInput()
     {
-        Console.WriteLine("Press any key to continue...");
+        Console.WriteLine(strings.PressKeyToContinue);
         Console.ReadKey(true);
     }
 
