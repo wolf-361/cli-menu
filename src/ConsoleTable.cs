@@ -22,10 +22,17 @@ public class ConsoleTable
     private const string Empty = "";
 
     // Instance Fields
+    private string? _title;
+    private readonly List<string> _columnNames = new();
     private readonly List<string[]> _rows = new();
     private readonly List<int> _columnWidths = new();
-    private readonly List<string> _columnNames = new();
     private int _columnCount; // Default to 0
+
+    // ----- Constructors -----
+    public ConsoleTable (string? title = null)
+    {
+        _title = title;
+    }
 
     // ----- Private Methods -----
 
@@ -158,85 +165,147 @@ public class ConsoleTable
 
     // ----- Public Methods -----
 
-    public void AddColumn(string columnName)
+    /// <summary>
+    /// Sets the title of the table.
+    /// </summary>
+    /// <param name="title">The (new) title of the table</param>
+    public void SetTitle(string title)
     {
-        _columnNames.Add(columnName);
-        _columnCount++;
-        _columnWidths.Add(columnName.Length);
+        _title = title;
     }
 
-    public void AddColumns(params string[] columnNames)
+    /// <summary>
+    /// Add one or multiple columns to the table.
+    /// </summary>
+    /// <param name="columnNames">The column name(s)</param>
+    public void AddColumn(params string[] columnNames)
     {
         _columnNames.AddRange(columnNames);
         _columnCount += columnNames.Length;
         _columnWidths.AddRange(columnNames.Select(name => name.Length));
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (string)</param>
     public void Append(params string[] items)
     {
         AddRow(items);
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (int)</param>
     public void Append(params int[] items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (double)</param>
     public void Append(params double[] items)
     {
         AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (float)</param>
     public void Append(params float[] items)
     {
         AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (decimal)</param>
     public void Append(params decimal[] items)
     {
         AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (bool)</param>
     public void Append(params bool[] items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The items (char)</param>
     public void Append(params char[] items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (string) to add</param>
     public void Append(IEnumerable<string> items)
     {
         AddRow(items.ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (int) to add</param>
     public void Append(IEnumerable<int> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (double) to add</param>
     public void Append(IEnumerable<double> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (float) to add</param>
     public void Append(IEnumerable<float> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (decimal) to add</param>
     public void Append(IEnumerable<decimal> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (bool) to add</param>
     public void Append(IEnumerable<bool> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
     }
 
+    /// <summary>
+    /// Append a row to the table.
+    /// </summary>
+    /// <param name="items">The array (char) to add</param>
     public void Append(IEnumerable<char> items)
     {
         AddRow(items.Select(item => item.ToString()).ToArray());
