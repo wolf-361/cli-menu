@@ -153,6 +153,7 @@ public class ConsoleTable
         AddRow(items);
     }
 
+
     public void Display()
     {
         // If the table is empty, display a message
@@ -162,22 +163,28 @@ public class ConsoleTable
             return;
         }
 
-        // Display the top border
-        Console.WriteLine(GetTopBorder());
+        // Display the bottom border
+        Console.WriteLine(this);
+    }
 
-        // Display the column names
-        Console.WriteLine(GetRowString(_columnNames.ToArray()));
+    // return the table as a string
+    public override string ToString()
+    {
+        StringBuilder sb = new();
 
-        // Display the middle border
-        Console.WriteLine(GetMiddleBorder());
+        // Sandwitch the table colomn names between the top and middle border
+        sb.AppendLine(GetTopBorder());
+        sb.AppendLine(GetRowString(_columnNames.ToArray()));
+        sb.AppendLine(GetMiddleBorder());
 
-        // Display the rows
+        // Add the rows
         foreach (var row in _rows)
         {
-            Console.WriteLine(GetRowString(row));
+            sb.AppendLine(GetRowString(row));
         }
 
-        // Display the bottom border
-        Console.WriteLine(GetBottomBorder());
+        // Add the bottom border
+        sb.AppendLine(GetBottomBorder());
+        return sb.ToString();
     }
 }
