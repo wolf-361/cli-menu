@@ -1,3 +1,4 @@
+using System.Globalization;
 using cli_menu.Properties;
 using System.Text;
 
@@ -176,6 +177,70 @@ public class ConsoleTable
         AddRow(items);
     }
 
+    public void Append(params int[] items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(params double[] items)
+    {
+        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
+    }
+
+    public void Append(params float[] items)
+    {
+        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
+    }
+
+    public void Append(params decimal[] items)
+    {
+        AddRow(items.Select(item => item.ToString(CultureInfo.CurrentCulture)).ToArray());
+    }
+
+    public void Append(params bool[] items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(params char[] items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<string> items)
+    {
+        AddRow(items.ToArray());
+    }
+
+    public void Append(IEnumerable<int> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<double> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<float> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<decimal> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<bool> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
+
+    public void Append(IEnumerable<char> items)
+    {
+        AddRow(items.Select(item => item.ToString()).ToArray());
+    }
 
     public void Display()
     {
