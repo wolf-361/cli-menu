@@ -58,9 +58,65 @@ menu.AddOption(() => option1, () => {
 menu.Header = () => $"Current time is {DateTime.Now}";
 ```
 
-## In development
 
-- Adding a Table builder and allowing to integrate it in the menu
+## The ConsoleTable class
+
+### Basic Usage
+
+```csharp
+using cli_menu;
+
+// Create a new table
+ConsoleTable table = new ConsoleTable();
+
+// Add columns
+table.AddColumn("Column 1");
+
+// Add rows
+table.Append("Row 1");
+table.Append("Row 2");
+
+// Display the table
+table.Display();
+```
+
+### Adding multiple columns
+
+```csharp
+// Add multiple columns
+table.AddColumns("Column 1", "Column 2", "Column 3");
+```
+
+### Adding multiple items to a row
+```csharp
+// Add multiple items to a row
+table.AddRow("Item 1", "Item 1", "Item 1");
+```
+
+### Setting the table title
+
+#### After creating the table
+
+```csharp
+// Set the table title
+table.SetTitle("Table Title");
+```
+
+#### When creating the table
+
+```csharp
+// Set the table title
+ConsoleTable table = new ConsoleTable("Table Title");
+```
+
+## Localisation
+
+### Changing the language
+
+```csharp
+// Change the language to French
+Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("fr-CA");
+```
 
 ## Contributing
 
