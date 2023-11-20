@@ -19,7 +19,7 @@ public class ConsoleTable
 
     private static readonly Dictionary<BorderType, char[]> borders = new()
     {
-        { BorderType.Top, new char[3] {'┌', '┬', '┐'} },
+        { BorderType.Top,    new char[3] { '┌', '┬', '┐' } },
         { BorderType.Middle, new char[3] { '├', '┼', '┤' } },
         { BorderType.Bottom, new char[3] { '└', '┴', '┘' } }
     };
@@ -32,7 +32,7 @@ public class ConsoleTable
     private int _columnCount; // Default to 0
 
     // Accessors
-    public string Title { set { _title = value; } }
+    public string? Title { set { _title = value; } }
 
     // ----- Constructors -----
     public ConsoleTable(string? title = null)
@@ -45,12 +45,7 @@ public class ConsoleTable
 
     private static string GetLine(int columnWidth)
     {
-        StringBuilder sb = new();
-
-        for (var i = 0; i < columnWidth + 2; i++)
-            sb.Append(HorizontalLine);
-
-        return sb.ToString();
+        return new string(HorizontalLine, columnWidth + 2);
     }
 
     private string GetBorder(BorderType type)
@@ -101,28 +96,27 @@ public class ConsoleTable
 
     private void AddRow(string[] row)
     {
-        // Update the column count (fist cause the value is used later)
+        // Update the column count (first cause the value is used later)
         if (row.Length > _columnCount)
             _columnCount = row.Length;
 
         // Update the column widths
-        for (var i = 0; i < _columnCount; i++)
+        for (var i = 0; i < row.Length; i++)
         {
             var width = row[i].Length;
 
             // Check if there is currently a value at this index
-            try
+            if (i < _columnWidths.Count)
             {
                 if (width > _columnWidths[i])
                 {
                     _columnWidths[i] = width;
                 }
             }
-            catch (ArgumentOutOfRangeException)
+            else
             {
                 _columnWidths.Add(width);
             }
-
         }
 
         // Add the row to the table (ajust the length of the rows if needed)
@@ -147,7 +141,7 @@ public class ConsoleTable
     /// Add one or multiple columns to the table.
     /// </summary>
     /// <param name="columnNames">The column name(s)</param>
-    public void AddColumn(params string[] columnNames)
+    public void AddColumns(params string[] columnNames)
     {
         _columnNames.AddRange(columnNames);
         _columnCount += columnNames.Length;
