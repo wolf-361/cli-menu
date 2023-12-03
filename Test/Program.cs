@@ -41,9 +41,9 @@ table.Title = "Test";
 table.Append("Test 1", "Test 2");
 table.Append("Test 3", "Test 4", null);
 table.Append(43.999999, 1, true);
-table.Append(1,2,3);
+table.Append(1, 2, 3);
 table.Append(new List<int> { 4, 5, 6 });
-table.Append(new [] { 7, 8, 9 });
+table.Append(new[] { 7, 8, 9 });
 
 table.Display();
 

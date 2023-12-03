@@ -1,4 +1,5 @@
 using cli_menu.Properties;
+using cli_menu.Utils;
 using System.Text;
 
 namespace cli_menu;
@@ -48,49 +49,44 @@ public class ConsoleTable
         return new string(HorizontalLine, columnWidth + 2);
     }
 
+    private IEnumerable<string> GetLines()
+    {
+        for (var i = 0; i < _columnCount; i++)
+        {
+            yield return GetLine(_columnWidths[i]);
+        }
+    }
+
     private string GetBorder(BorderType type)
     {
         StringBuilder sb = new();
+
         sb.Append(borders[type][0]);
+        sb.AppendJoin(borders[type][1], GetLines());
+        sb.Append(borders[type][2]);
+
+        return sb.ToString();
+    }
+
+    private IEnumerable<string> GetRowColumnsCentered(string[] row)
+    {
         for (var i = 0; i < _columnCount; i++)
         {
-            sb.Append(GetLine(_columnWidths[i]));
-            sb.Append(borders[type][1]);
+            yield return row[i].PadCenter(_columnWidths[i], Space);
         }
-        sb.Remove(sb.Length - 1, 1);
-        sb.Append(borders[type][2]);
-        return sb.ToString();
     }
 
     private string GetRowString(string[] row)
     {
         StringBuilder sb = new();
+        var separator = $"{Space}{VerticalLine}{Space}";
 
-        // Ajust the length of the rows if needed
-        if (row.Length < _columnCount)
-        {
-            var newRow = new string[_columnCount];
-            for (var i = 0; i < _columnCount; i++)
-            {
-                if (row.Length > i)
-                    newRow[i] = row[i];
-                else
-                    newRow[i] = string.Empty;
-            }
-            row = newRow;
-        }
+        Array.Resize(ref row, _columnCount);
+        
+        sb.Append(separator);
+        sb.AppendJoin(separator, GetRowColumnsCentered(row));
+        sb.Append(separator);
 
-        for (var i = 0; i < _columnCount; i++)
-        {
-            sb.Append(VerticalLine);
-            sb.Append(Space);
-
-            // Center the text in the column
-            var padding = (_columnWidths[i] - row[i].Length) / 2;
-            sb.Append(row[i].PadLeft(padding + row[i].Length, Space).PadRight(_columnWidths[i], Space));
-            sb.Append(Space);
-        }
-        sb.Append(VerticalLine);
         return sb.ToString();
     }
 
