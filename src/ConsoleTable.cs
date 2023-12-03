@@ -151,21 +151,20 @@ public class ConsoleTable
     /// <summary>
     /// Append a row to the table.
     /// </summary>
-    /// <typeparamref name="T"/>
-    /// <param name="items">The items (T)</param>
-    public void Append<T>(params T[] items) where T : notnull
+    /// <param name="items">Items to be added in a single row</param>
+    public void Append(params object?[] items)
     {
-        Append((IEnumerable<T>)items);
+        Append<object?>(items);
     }
 
     /// <summary>
     /// Append a row to the table.
     /// </summary>
     /// <typeparamref name="T"/>
-    /// <param name="items">The array (T) to add</param>
-    public void Append<T>(IEnumerable<T> items) where T : notnull
+    /// <param name="items">The collection (T) to be added in a single row</param>
+    public void Append<T>(IEnumerable<T> items)
     {
-        AddRow(items.Select(item => item.ToString() ?? "").ToArray());
+        AddRow(items.Select(item => item?.ToString() ?? "").ToArray());
     }
 
     /// <summary>
