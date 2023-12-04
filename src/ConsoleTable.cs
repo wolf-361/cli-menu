@@ -92,22 +92,20 @@ public class ConsoleTable
 
     private void AddRow(string[] row)
     {
-        // Update the already existing column widths
-        for (var i = 0; i < row.Length; i++)
+        var width = row.Length;
+
+        // Resize columnWidths and adjust column Count if necessary
+        if (width > _columnCount)
         {
-            if (row[i].Length > _columnWidths[i])
-                _columnWidths[i] = row[i].Length;
+            _columnWidths.AddRange(new int[width - _columnCount]);
+            _columnCount = width;
         }
 
-        // Add new columns width
-        for (var i = _columnCount; i < row.Length; i++)
+        // Update every columns width
+        for (var i = 0; i < width; i++)
         {
-            _columnWidths.Add(row[i].Length);
+            _columnWidths[i] = Math.Max(row[i].Length, _columnWidths[i]);
         }
-
-        // Adjust column count if needed
-        if (row.Length > _columnCount)
-            _columnCount = row.Length;
 
         // Ajust the length of the row
         Array.Resize(ref row, _columnCount);
