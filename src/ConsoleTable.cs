@@ -82,7 +82,7 @@ public class ConsoleTable
         var separator = $"{Space}{VerticalLine}{Space}";
 
         Array.Resize(ref row, _columnCount);
-        
+
         sb.Append(separator.Substring(1));
         sb.AppendJoin(separator, GetRowColumnsCentered(row));
         sb.Append(separator.Substring(0, separator.Length - 1));
@@ -120,9 +120,17 @@ public class ConsoleTable
     /// <param name="columnNames">The column name(s)</param>
     public void AddColumns(params string[] columnNames)
     {
-        _columnNames.AddRange(columnNames);
-        _columnCount += columnNames.Length;
-        _columnWidths.AddRange(columnNames.Select(name => name.Length));
+        for (int i = 0; i < columnNames.Length; i++)
+        {
+            _columnNames.Add(columnNames[i]);
+            _columnCount = Math.Max(_columnCount, _columnNames.Count);
+
+            if (_columnWidths.Count < _columnCount)
+                _columnWidths.Add(0);
+
+            var widthIndex = _columnCount - 1;
+            _columnWidths[widthIndex] = Math.Max(_columnWidths[widthIndex], columnNames[i].Length);
+        }
     }
 
     /// <summary>
