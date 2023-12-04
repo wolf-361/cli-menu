@@ -83,51 +83,34 @@ public class ConsoleTable
 
         Array.Resize(ref row, _columnCount);
         
-        sb.Append(separator);
+        sb.Append(separator.Substring(1));
         sb.AppendJoin(separator, GetRowColumnsCentered(row));
-        sb.Append(separator);
+        sb.Append(separator.Substring(0, separator.Length - 1));
 
         return sb.ToString();
     }
 
     private void AddRow(string[] row)
     {
-        // Update the column count (first cause the value is used later)
+        // Update the already existing column widths
+        for (var i = 0; i < row.Length; i++)
+        {
+            if (row[i].Length > _columnWidths[i])
+                _columnWidths[i] = row[i].Length;
+        }
+
+        // Add new columns width
+        for (var i = _columnCount; i < row.Length; i++)
+        {
+            _columnWidths.Add(row[i].Length);
+        }
+
+        // Adjust column count if needed
         if (row.Length > _columnCount)
             _columnCount = row.Length;
 
-        // Update the column widths
-        for (var i = 0; i < row.Length; i++)
-        {
-            var width = row[i].Length;
-
-            // Check if there is currently a value at this index
-            if (i < _columnWidths.Count)
-            {
-                if (width > _columnWidths[i])
-                {
-                    _columnWidths[i] = width;
-                }
-            }
-            else
-            {
-                _columnWidths.Add(width);
-            }
-        }
-
-        // Add the row to the table (ajust the length of the rows if needed)
-        if (row.Length < _columnCount)
-        {
-            var newRow = new string[_columnCount];
-            for (var i = 0; i < _columnCount; i++)
-            {
-                if (row.Length > i)
-                    newRow[i] = row[i];
-                else
-                    newRow[i] = string.Empty;
-            }
-            row = newRow;
-        }
+        // Ajust the length of the row
+        Array.Resize(ref row, _columnCount);
         _rows.Add(row);
     }
 
