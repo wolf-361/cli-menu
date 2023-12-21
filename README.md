@@ -99,7 +99,7 @@ table.AddRow("Item 1", "Item 1", "Item 1");
 
 ```csharp
 // Set the table title
-table.SetTitle("Table Title");
+table.Title = "Table Title";
 ```
 
 #### When creating the table
