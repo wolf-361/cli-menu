@@ -21,21 +21,8 @@ public class Menu
         _options = list;
     }
 
-    #region Constructors overloads
-
-    public Menu(string title)
-        : this(() => title, new List<Option>()) { }
-
-    public Menu(Func<string> title)
-        : this(title, new List<Option>()) { }
-
     public Menu(string title, params Option[] options)
-        : this(() => title, options.ToList()) { }
-
-    public Menu(Func<string> title, params Option[] options)
-        : this(title, options.ToList()) { }
-
-    #endregion
+        : this(title.ToString, options.ToList()) { }
 
     // --- Option management ---
 
@@ -43,9 +30,11 @@ public class Menu
     /// Adds an option to this menu.
     /// </summary>
     /// <param name="option">The option object to add to the menu</param>
-    public void AddOption(Option option)
+    public Menu AddOption(Option option)
     {
         _options.Add(option);
+
+        return this;
     }
 
     /// <summary>
@@ -54,18 +43,18 @@ public class Menu
     /// <param name="name">The name of the option</param>
     /// <param name="action">The action the option will do when selected</param>
     /// <param name="waitForUser">(optional, default = false) If we should wait for the user on completion</param>
-    public void AddOption(string name, Action action, bool waitForUser = true)
-    {
-        AddOption(new Option(name, action, waitForUser));
-    }
+    public Menu AddOption(string name, Action action, bool waitForUser = true)
+        => AddOption(new Option(name, action, waitForUser));
 
     /// <summary>
     /// Adds multiple options to this menu.
     /// </summary>
     /// <param name="options">Thes options to add to the menu</param>
-    public void AddOptions(params Option[] options)
+    public Menu AddOptions(params Option[] options)
     {
         _options.AddRange(options);
+
+        return this;
     }
 
     // --- Menu management ---

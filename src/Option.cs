@@ -53,7 +53,7 @@ public class Option
 
         _action.DynamicInvoke();
 
-        // If the option is set to wait for user input, wait for the user to press enter.
+        // If the option is set to wait for user input, wait for the user to press any key.
         if (_waitForUser)
             WaitForUserInput();
     }
