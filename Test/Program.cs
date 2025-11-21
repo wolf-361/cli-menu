@@ -13,7 +13,7 @@ table.AddColumns("Test 1", "Test 2")
     .Append("Test 1", "Test 2")
     .Append("Test 3", "Test 4", null)
     .Append(43.999999, 1, true)
-    .Append(43.999999, 1, true)
+    .Append(43.999999, 1, true, "Super long text in last column")
     .Append(1, 2, 3)
     .Append<int>([4, 5, 6]);
 
@@ -42,5 +42,13 @@ menu.AddOption("Option 4", () => Console.WriteLine("Option 4 was selected!"))
     .AddOption("Option 5", () => Console.WriteLine("Option 5 was selected!"))
     .AddOption("Option 6", () => Console.WriteLine("Option 6 was selected!"))
     .AddOption("Option 7", () => Console.WriteLine("Option 7 was selected!"))
+    .AddOption("Option 8", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 9", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 10", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 11", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 12", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 13", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 14", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 15", () => Console.WriteLine("Option was selected!"))
     .Start();
 
