@@ -1,5 +1,7 @@
 ﻿using cli_menu.Properties;
+using System;
 using System.ComponentModel.Design;
+using System.Diagnostics;
 using System.Text;
 
 namespace cli_menu;
@@ -77,6 +79,7 @@ public class Menu
         } while (SelectedOption != Option.ExitOption);
 
         Console.CursorVisible = true;
+        ClearConsole();
     }
 
     /// <summary>
@@ -123,7 +126,7 @@ public class Menu
     {
         var currentForegroudColor = Console.ForegroundColor;
 
-        Console.Clear();
+        ClearConsole();
         Console.WriteLine($"--- {Title()} ---");
         Console.WriteLine();
 
@@ -149,5 +152,15 @@ public class Menu
         Console.WriteLine();
         Console.Write(strings.UseArrowKeysToNavigate + ' ');
         Console.WriteLine(strings.PressEnterToSelectOption);
+    }
+
+    private void ClearConsole()
+    {
+        Console.Clear();
+
+        // \x1b[3J
+        // erase entire screen + scrollback
+        // Ref: https://alligatr.co.uk/ansi-codes/
+        Console.WriteLine("\x1b[3J");
     }
 }
