@@ -21,7 +21,7 @@ using cli_menu;
 Menu menu = new Menu("Main Menu");
 
 // Add a menu option
-menu.AddOption("Option 1", () => Console.WriteLine("Option 1 selected"))
+menu.AddOption("Option 1", () => Console.WriteLine("Option 1 selected"));
 
 // Display the menu
 menu.Start();
