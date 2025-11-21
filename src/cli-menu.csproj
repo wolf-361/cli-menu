@@ -10,7 +10,7 @@
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
         <Title>cli Menu</Title>
-        <Version>1.0.4</Version>
+        <Version>1.1.0</Version>
         <Authors>Luc Allaire, Hillpro</Authors>
         <Description>Simple C# cli menu. Includes a table class for displaying data in a table format.</Description>
         <Copyright>Copyright (c) 2023 Luc Allaire</Copyright>

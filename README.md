@@ -21,7 +21,7 @@ using cli_menu;
 Menu menu = new Menu("Main Menu");
 
 // Add a menu option
-menu.AddOption("Option 1", () => Console.WriteLine("Option 1 selected"));
+menu.AddOption("Option 1", () => Console.WriteLine("Option 1 selected"))
 
 // Display the menu
 menu.Start();
@@ -70,11 +70,9 @@ using cli_menu;
 ConsoleTable table = new ConsoleTable();
 
 // Add columns
-table.AddColumn("Column 1");
-
-// Add rows
-table.Append("Row 1");
-table.Append("Row 2");
+table.AddColumn("Column 1")
+    .Append("Row 1")
+    .Append("Row 2");
 
 // Display the table
 table.Display();

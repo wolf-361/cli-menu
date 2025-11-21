@@ -3,7 +3,10 @@ name: NuGet publisher for cli-menu
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "master" ]
+    # branches:
+    # - "master"
+    tags:
+     - 'v[0-9]+.[0-9]+.[0-9]+' # tag pattern: 'v{{version}'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,7 +25,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 8.0.x
 
     - name: Pack
       run: dotnet pack --configuration Release
