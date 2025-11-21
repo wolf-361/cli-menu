@@ -1,8 +1,4 @@
 ﻿using cli_menu.Properties;
-using System;
-using System.ComponentModel.Design;
-using System.Diagnostics;
-using System.Text;
 
 namespace cli_menu;
 
@@ -74,8 +70,11 @@ public class Menu
 
         do
         {
-            NextChoice();
-            SelectedOption.Invoke();
+            Show();
+
+            if (NextChoiceSelected(waitForInput: true))
+                SelectedOption.Invoke();
+
         } while (SelectedOption != Option.ExitOption);
 
         Console.CursorVisible = true;
@@ -83,35 +82,33 @@ public class Menu
     }
 
     /// <summary>
-    /// Select the next option
+    /// Check if the next option has been selected
     /// </summary>
-    /// <returns>Option: Kept return in case of future change</returns>
-    private Option NextChoice()
+    private bool NextChoiceSelected(bool waitForInput = false)
     {
-        do
+        if (!Console.KeyAvailable && waitForInput == false)
+            return false;
+
+        var input = Console.ReadKey(true);
+
+        switch (input.Key)
         {
-            Show();
-
-            var input = Console.ReadKey(true);
-
-            switch (input.Key)
-            {
-                case ConsoleKey.UpArrow:
-                    MoveUp();
-                    break;
-                case ConsoleKey.DownArrow:
-                    MoveDown();
-                    break;
-                case ConsoleKey.Home:
-                    MoveFirst();
-                    break;
-                case ConsoleKey.End:
-                    MoveLast();
-                    break;
-                case ConsoleKey.Enter:
-                    return SelectedOption;
-            }
-        } while (true);
+            case ConsoleKey.UpArrow:
+                MoveUp();
+                break;
+            case ConsoleKey.DownArrow:
+                MoveDown();
+                break;
+            case ConsoleKey.Home:
+                MoveFirst();
+                break;
+            case ConsoleKey.End:
+                MoveLast();
+                break;
+            case ConsoleKey.Enter:
+                return true;
+        }
+        return false;
     }
 
     private void MoveUp() => _selectedOptionIndex = Math.Max(0, _selectedOptionIndex - 1);
