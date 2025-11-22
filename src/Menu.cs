@@ -67,15 +67,21 @@ public class Menu
         Console.CursorVisible = false;
 
         _options.Add(Option.ExitOption);
+        bool stop = false;
 
-        do
+        while(!stop)
         {
             Show();
 
+            // Blocking UI Thread until next ConsoleKey input
             if (NextChoiceSelected(waitForInput: true))
-                SelectedOption.Invoke();
-
-        } while (SelectedOption != Option.ExitOption);
+            {
+                if (SelectedOption == Option.ExitOption)
+                    stop = true;
+                else
+                    SelectedOption.Invoke();
+            }
+        }
 
         Console.CursorVisible = true;
         ClearConsole();
@@ -86,7 +92,7 @@ public class Menu
     /// </summary>
     private bool NextChoiceSelected(bool waitForInput = false)
     {
-        if (!Console.KeyAvailable && waitForInput == false)
+        if (!Console.KeyAvailable && !waitForInput)
             return false;
 
         var input = Console.ReadKey(true);
