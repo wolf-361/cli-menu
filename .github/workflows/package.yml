@@ -1,10 +1,8 @@
 name: NuGet publisher for cli-menu
 
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+  # Triggers the workflow on new version tag
   push:
-    # branches:
-    # - "master"
     tags:
      - 'v[0-9]+.[0-9]+.[0-9]+' # tag pattern: 'v{{version}'
 
