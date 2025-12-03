@@ -3,14 +3,34 @@ using System.Globalization;
 
 Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("en-CA");
 
-var menu = new Menu("Test Menu");
+ConsoleTable table = new()
+{
+    Title = "Test"
+};
 
-string test = "Option 1";
+table.AddColumns("Test 1", "Test 2")
+    .AddColumns("Test 3")
+    .Append("Test 1", "Test 2")
+    .Append("Test 3", "Test 4", null)
+    .Append(43.999999, 1, true)
+    .Append(43.999999, 1, true, "Super long text in last column")
+    .Append(1, 2, 3)
+    .Append<int>([4, 5, 6]);
+
+
+var menu = new Menu("Test Menu")
+{
+    // Add the delegate to the menu header. that will change the header text to the current time.
+    Header = () => $"Test Menu - {DateTime.Now}"
+};
+
+string test = "Option 1 (Test Table)";
 
 menu.AddOptions(
-        new Option(() => test, () =>
+        new Option(test.ToString, () =>
         {
-            test = "Test as été selectionner";
+            test = "Test Table was selected!";
+            table.Display();
             Console.WriteLine(test);
         }),
         new Option("Option 2", () => Console.WriteLine("Option 2 was selected!")),
@@ -18,35 +38,17 @@ menu.AddOptions(
     );
 
 // Add options to the menu.
-menu.AddOption("Option 4", () => Console.WriteLine("Option 4 was selected!"));
-menu.AddOption("Option 5", () => Console.WriteLine("Option 5 was selected!"));
-menu.AddOption("Option 6", () => Console.WriteLine("Option 6 was selected!"));
-menu.AddOption("Option 7", () => Console.WriteLine("Option 7 was selected!"));
-menu.AddOption("Option 8", () => Console.WriteLine("Option 8 was selected!"));
-menu.AddOption("Option 9", () => Console.WriteLine("Option 9 was selected!"));
-menu.AddOption("Option 10", () => Console.WriteLine("Option 10 was selected!"));
-
-// Add the delegate to the menu header. that will change the header text to the current time.
-menu.Header = () => $"Test Menu - {DateTime.Now}";
-
-
-//menu.Start();
-
-// Console table test
-ConsoleTable table = new() {
-    Title = "Test"
-};
-
-table.AddColumns("Test 1", "Test 2");
-
-table.Append("Test 1", "Test 2");
-table.Append("Test 3", "Test 4", null);
-table.Append(43.999999, 1, true);
-table.Append(1, 2, 3);
-table.Append(new List<int> { 4, 5, 6 });
-table.Append(new[] { 7, 8, 9 });
-
-table.AddColumns("Test 3");
-
-table.Display();
+menu.AddOption("Option 4", () => Console.WriteLine("Option 4 was selected!"))
+    .AddOption("Option 5", () => Console.WriteLine("Option 5 was selected!"))
+    .AddOption("Option 6", () => Console.WriteLine("Option 6 was selected!"))
+    .AddOption("Option 7", () => Console.WriteLine("Option 7 was selected!"))
+    .AddOption("Option 8", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 9", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 10", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 11", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 12", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 13", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 14", () => Console.WriteLine("Option was selected!"))
+    .AddOption("Option 15", () => Console.WriteLine("Option was selected!"))
+    .Start();
 

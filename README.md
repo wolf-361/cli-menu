@@ -70,11 +70,9 @@ using cli_menu;
 ConsoleTable table = new ConsoleTable();
 
 // Add columns
-table.AddColumn("Column 1");
-
-// Add rows
-table.Append("Row 1");
-table.Append("Row 2");
+table.AddColumn("Column 1")
+    .Append("Row 1")
+    .Append("Row 2");
 
 // Display the table
 table.Display();

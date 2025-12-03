@@ -1,12 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>cli_menu</RootNamespace>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <RootNamespace>cli_menu</RootNamespace>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
         <Title>cli Menu</Title>
+        <Version>1.1.0</Version>
         <Authors>Luc Allaire, Hillpro</Authors>
         <Description>Simple C# cli menu. Includes a table class for displaying data in a table format.</Description>
         <Copyright>Copyright (c) 2023 Luc Allaire</Copyright>
@@ -16,7 +20,6 @@
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageTags>Library, cli</PackageTags>
-        <Version>1.0.4</Version>
     </PropertyGroup>
 
     <ItemGroup>

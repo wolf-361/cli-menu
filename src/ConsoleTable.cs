@@ -4,7 +4,14 @@ using System.Text;
 
 namespace cli_menu;
 
-public enum BorderType
+public enum BorderVerticalType
+{
+    Left,
+    Middle,
+    Right,
+}
+
+public enum BorderHorizontalType
 {
     Top,
     Middle,
@@ -18,31 +25,33 @@ public class ConsoleTable
     private const char VerticalLine = '|';
     private const char Space = ' ';
 
-    private static readonly Dictionary<BorderType, char[]> borders = new()
+    private readonly char[,] bordersMatrix =
     {
-        { BorderType.Top,    new char[3] { '┌', '┬', '┐' } },
-        { BorderType.Middle, new char[3] { '├', '┼', '┤' } },
-        { BorderType.Bottom, new char[3] { '└', '┴', '┘' } }
+        { '┌', '┬', '┐' },
+        { '├', '┼', '┤' },
+        { '└', '┴', '┘' }
     };
 
     // Instance Fields
-    private string? _title;
-    private readonly List<string> _columnNames = new();
-    private readonly List<string[]> _rows = new();
-    private readonly List<int> _columnWidths = new();
-    private int _columnCount; // Default to 0
+    private readonly List<Column> _columns = [];
+    private readonly List<List<string>> _rows = [];
+
+    private class Column()
+    {
+        public string? Title;
+        public int Width;
+    }
 
     // Accessors
-    public string? Title { set { _title = value; } }
+    public string? Title { get; set; }
 
     // ----- Constructors -----
     public ConsoleTable(string? title = null)
     {
-        _title = title;
+        Title = title;
     }
 
     // ----- Private Methods -----
-
 
     private static string GetLine(int columnWidth)
     {
@@ -51,64 +60,61 @@ public class ConsoleTable
 
     private IEnumerable<string> GetLines()
     {
-        for (var i = 0; i < _columnCount; i++)
+        for (var i = 0; i < _columns.Count; i++)
         {
-            yield return GetLine(_columnWidths[i]);
+            yield return GetLine(_columns[i].Width);
         }
     }
 
-    private string GetBorder(BorderType type)
+    private char GetBorderSymbol(BorderHorizontalType horinzontal, BorderVerticalType vertical)
+    {
+        return bordersMatrix[(int)horinzontal, (int)vertical];
+    }
+
+    private string GetBorder(BorderHorizontalType type)
     {
         StringBuilder sb = new();
 
-        sb.Append(borders[type][0]);
-        sb.AppendJoin(borders[type][1], GetLines());
-        sb.Append(borders[type][2]);
+        sb.Append(GetBorderSymbol(type, BorderVerticalType.Left));
+        sb.AppendJoin(GetBorderSymbol(type, BorderVerticalType.Middle), GetLines());
+        sb.Append(GetBorderSymbol(type, BorderVerticalType.Right));
 
         return sb.ToString();
     }
 
-    private IEnumerable<string> GetRowColumnsCentered(string[] row)
+    private IEnumerable<string?> GetRowColumnsCentered(IEnumerable<string?> row)
     {
-        for (var i = 0; i < _columnCount; i++)
+        for (var i = 0; i < _columns.Count; i++)
         {
-            yield return row[i].PadCenter(_columnWidths[i], Space);
+            string element = row.ElementAtOrDefault(i) ?? string.Empty;
+
+            yield return element.PadCenter(_columns[i].Width, Space);
         }
     }
 
-    private string GetRowString(string[] row)
+    private string GetRowString(IEnumerable<string?> row)
     {
         StringBuilder sb = new();
         var separator = $"{Space}{VerticalLine}{Space}";
 
-        Array.Resize(ref row, _columnCount);
-
-        sb.Append(separator.Substring(1));
-        sb.AppendJoin(separator, GetRowColumnsCentered(row));
-        sb.Append(separator.Substring(0, separator.Length - 1));
+        sb.Append(separator.AsSpan(1))
+            .AppendJoin(separator, GetRowColumnsCentered(row))
+            .Append(separator.AsSpan(0, separator.Length - 1));
 
         return sb.ToString();
     }
 
-    private void AddRow(string[] row)
+    private void AddRow(List<string> row)
     {
-        var width = row.Length;
-
-        // Resize columnWidths and adjust column Count if necessary
-        if (width > _columnCount)
+        // Update columns widths
+        for (var i = 0; i < row.Count; i++)
         {
-            _columnWidths.AddRange(new int[width - _columnCount]);
-            _columnCount = width;
+            if (_columns.Count <= i)
+                _columns.Add(new() { Width = row[i].Length });
+            else
+                _columns[i].Width = Math.Max(_columns[i].Width, row[i].Length);
         }
 
-        // Update every columns width
-        for (var i = 0; i < width; i++)
-        {
-            _columnWidths[i] = Math.Max(row[i].Length, _columnWidths[i]);
-        }
-
-        // Ajust the length of the row
-        Array.Resize(ref row, _columnCount);
         _rows.Add(row);
     }
 
@@ -118,38 +124,39 @@ public class ConsoleTable
     /// Add one or multiple columns to the table.
     /// </summary>
     /// <param name="columnNames">The column name(s)</param>
-    public void AddColumns(params string[] columnNames)
+    public ConsoleTable AddColumns(params string[] columnNames)
     {
-        for (int i = 0; i < columnNames.Length; i++)
+        foreach (var columnName in columnNames)
         {
-            _columnNames.Add(columnNames[i]);
-            _columnCount = Math.Max(_columnCount, _columnNames.Count);
+            var column = new Column()
+            {
+                Title = columnName,
+                Width = columnName.Length
+            };
 
-            if (_columnWidths.Count < _columnCount)
-                _columnWidths.Add(0);
-
-            var widthIndex = _columnCount - 1;
-            _columnWidths[widthIndex] = Math.Max(_columnWidths[widthIndex], columnNames[i].Length);
+            _columns.Add(column);
         }
+
+        return this;
     }
 
     /// <summary>
     /// Append a row to the table.
     /// </summary>
     /// <param name="items">Items to be added in a single row</param>
-    public void Append(params object?[] items)
-    {
-        Append<object?>(items);
-    }
+    public ConsoleTable Append(params object?[] items)
+        => Append<object?>(items);
 
     /// <summary>
     /// Append a row to the table.
     /// </summary>
     /// <typeparamref name="T"/>
     /// <param name="items">The collection (T) to be added in a single row</param>
-    public void Append<T>(IEnumerable<T> items)
+    public ConsoleTable Append<T>(IEnumerable<T?> items)
     {
-        AddRow(items.Select(item => item?.ToString() ?? "").ToArray());
+        AddRow(items.Select(item => item?.ToString() ?? string.Empty).ToList());
+
+        return this;
     }
 
     /// <summary>
@@ -173,22 +180,14 @@ public class ConsoleTable
         StringBuilder sb = new();
 
         // Add the title (if there is one)
-        if (_title != null)
+        if (!string.IsNullOrWhiteSpace(Title))
         {
-            sb.AppendLine(_title);
+            sb.AppendLine(Title);
         }
 
-        // Sandwich the table colomn names between the top and middle border (if there are any)
-        if (_columnNames.Count > 0)
-        {
-            sb.AppendLine(GetBorder(BorderType.Top));
-            sb.AppendLine(GetRowString(_columnNames.ToArray()));
-            sb.AppendLine(GetBorder(BorderType.Middle));
-        }
-        else
-        {
-            sb.AppendLine(GetBorder(BorderType.Top));
-        }
+        sb.AppendLine(GetBorder(BorderHorizontalType.Top))
+            .AppendLine(GetRowString(_columns.Select(c => c.Title)))
+            .AppendLine(GetBorder(BorderHorizontalType.Middle));
 
         // Add the rows
         foreach (var row in _rows)
@@ -197,7 +196,7 @@ public class ConsoleTable
         }
 
         // Add the bottom border
-        sb.AppendLine(GetBorder(BorderType.Bottom));
+        sb.AppendLine(GetBorder(BorderHorizontalType.Bottom));
         return sb.ToString();
     }
 }
